@@ -17,24 +17,24 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-   bool check_exit = false;
+//    bool check_exit = false;
    
-   do
-   {
-       // username@hostname$
-       Command_Prompt();
+//    do
+//    {
+//        // username@hostname$
+//        Command_Prompt();
        
-       // C String for input
-       char input[512]; 
-       
-       
-       cin.getline(input,512);
-       
-       parse(input);
+//        // C String for input
+//        char input[512]; 
        
        
+//        cin.getline(input,512);
        
-   }while(!check_exit);
+//        parse(input);
+       
+       
+       
+//    }while(!check_exit);
    
    return 0;
 }
