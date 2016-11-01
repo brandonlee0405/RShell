@@ -27,6 +27,8 @@ void Command_Prompt()
 	}
 
 	cout << name << "@" << login_name << "$ ";
+	//test
 }
+
 
 #endif
