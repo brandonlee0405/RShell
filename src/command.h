@@ -37,7 +37,7 @@ class Command
             }
         }
         
-        
+        // need to use strtok
     private:
         //additional helper functions
         
