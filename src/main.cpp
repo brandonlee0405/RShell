@@ -12,6 +12,7 @@ Brandon Lee
 
 #include "command.h"
 #include "EC.h"
+#include <unistd.h>
 
 using namespace std;
 
@@ -30,6 +31,8 @@ int main(int argc, char** argv[])
 	} while (userInput.isEmpty()) //continue for when else to keep loop running.
 	//execution and parsing will be done below after rshell and command are
 	//given further implementation
+	
+	
 	
 	
 	

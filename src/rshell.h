@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <unistd.b>
+//include boost libraries 
+
+
 
 #include "command.h"
 #include "EC.h"
@@ -37,8 +40,11 @@ class Rshell
                as we now retrieve userinput from the main and it is stored
                as cmd.
                */
-		    char copyTemp[512];
-		    char userInputTemp[512];
+            // below, specify which is which
+            
+            
+		    char arr1[512]; 
+		    char arr2[512];
 		    // Iterates through the input to locate if '#' exists
 		    for (unsigned i = 0; arr2[i] != NULL; ++i)
 		    {
@@ -102,6 +108,7 @@ class Rshell
     		        }
     		    }
     		}
+    		
     		
     		// If needed, remove whitespace by using a for loop with an if statement
     		/*
