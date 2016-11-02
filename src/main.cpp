@@ -11,30 +11,20 @@ Brandon Lee
 #include <cstdlib>
 
 #include "command.h"
-//#include "EC.h"
+#include "EC.h"
 
 using namespace std;
 
-int main(int argc, char *argv[])
+int main(int argc, char** argv[])
 {
-//    bool check_exit = false;
-   
-//    do
-//    {
-//        // username@hostname$
-//        Command_Prompt();
-       
-//        // C String for input
-//        char input[512]; 
-       
-       
-//        cin.getline(input,512);
-       
-//        parse(input);
-       
-       
-       
-//    }while(!check_exit);
-   
-   return 0;
+	bool check_exit = false;
+	
+	do
+	{
+		
+		
+		
+	}while(!check_exit);
+	
+	return 0;
 }
