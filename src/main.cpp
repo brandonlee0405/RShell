@@ -9,26 +9,31 @@ Brandon Lee
 #include <string>
 #include <stdio.h>
 #include <cstdlib>
-
+#include "rshell.h"
+#include "execute.h"
 #include <unistd.h>
 
 using namespace std;
 
 int main(int argc, char* argv[])
 {
-	string userInput;
 	char hostName[512];
 	//char loginName[512];
 	char* loginName = getlogin();
 	gethostname(hostName, 255);
-	
+	string userInput;
+/*
 	do
 	{
 		cout << loginName << "@" << hostName << "$ ";
-		getline(cin, userInput);
-	} while (userInput.isEmpty()) //continue for when else to keep loop running.
+		getline(cin, userInput);	
+	} while (userInput.empty()); //continue for when else to keep loop running.
 	//execution and parsing will be done below after rshell and command are
 	//given further implementation
+*/	
+		cout << loginName << "@" << hostName << "$ ";
+	Rshell r;
+	r.parse();
 	
 	
 	

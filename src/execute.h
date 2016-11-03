@@ -15,103 +15,64 @@
 
 using namespace std;
 
+
+
 class Execute
 {
     
     private:
         int counter; //counts processes to run
-        
     public:
         //add in constructor and other functions after main execution
-        
-        char** execArgs(vector<char*>& vin, const int &ind)
-        {
-            //arg for use with execvp in execution
-            char** arg;
-            string temp;
-            string holdArg = userInput.at(ind); //holds the userInput at 
-            //whatever index is called
-            vector<string> tempVec;
-            /*  IMPORTANT!! VALIDATE IMPLEMENTATION
-            //split the holdArg into tempVec here using the 
-            //boost library 
-            */ 
-            boost::split(tempVec, holdArg, boost::is_any_of(" "));
-            
-            if (tempVec.at(0) == "echo")
-            {
-                //still need to convert this to c_string
-                //this will only push back the first element but
-                //will not take care of a string with multiple words
-                //handle after the statement below
-                //vin.push_back(tempVec.at(0).c_str());
-                
-                //from here we will handle any input after the first element 
-                for (int i = 1; i < tempVec.size(); ++i)
-                {
-                    if (temp.empty())
-                    {
-                        temp = tempVec.at(i);
-                    }
-                    else
-                    {
-                        temp = temp + " " + tempVec.at(i);
-                    }
-                }
-                //need to effectively convert this to c string as well
-                //vin.push_back(temp.c_str());
-            }
-            //here we will take other commands for handling within
-            //execution after storing them in vectors
-            else
-            {
-                for (int i = 0; i < tempVec.size(); ++i)
-                {
-                    //need to convert this too
-                    //vin.push_back(tempVec.at(i).c_str());
-                }
-            }
-            vin.push_back(NULL);
-            
-            //assigns char** arg the first element of vin
-            arg = &vin.at(0); 
-            
-            return arg;
-            
-            
-        }
-        int Execution()
+        char** execArgs(vector<char*>& vin)
+		{
+			char** tempArgv = &vin[0];	
+			return tempArgv;
+		}
+
+        int Execution(vector<vector<char *> > cmd)
         {
             /*  in here we will handle forking, execvp, and PID's 
                 see manpages for these things as well as directory checking, 
                 perror, etc.
             */ 
             int negStat = -1;
-            vector <char*> charVec;
-            
-            //check for exit then return a status value
-            if (userInput.at(getSize()).find("exit") != string::npos)
-            {
-                return negStat;
-            }
-            
+          
+
+            // TODO: this part
+			vector<char *> temp;
+			temp = cmd[0];			//gets the first row of commands
+				
+			char** arg[512];
+			memset(arg, '\0', sizeof(arg)); 
+			
+
+            //TODO: check for exit then return a status value
+			for (int i = 0; i < temp.size(); ++i)
+			{
+				if (temp.at(i) == "exit")
+				{
+					return negStat;
+				}
+			}
             
             //use all this later, need to run preliminary arguments
             pid_t pid; 
             pid_t waitid;
             int status;
-            char const* cmdexe = ("ls", "-a", NULL);
+            //char const* cmdexe = ("ls", "-a", NULL);
             
             // creates child
             pid = fork();
             // if pid < 0 then it's an error
-            if (pid < 0);
+            if (pid < 0)
             {
                 perror("Error occurred!");
             }
             // pid == then child
             else if (pid == 0)
             {
+				cout << "I am executing" << endl;
                 if (execvp(arg[0], arg) < 0)
                 {
                     cout << "-bash: " << arg[0] << " : command not found"
@@ -121,11 +82,12 @@ class Execute
                 }
                 _exit(0); //kills child processes and will return 0 as usual
             }
+			waitpid(-1, &status, 0);
             
         }
+		 
     
-    
-        isExecute(vector<string> separator, vector<vector<char *> > command)
+        void isExecute(vector<string> separator, vector<vector<char *> > command)
         {
             string exit = "exit";
             string clear = "clear";
@@ -168,7 +130,8 @@ class Execute
                     return;
                 }
             }
-            
+           
+		   /*
             if (command_size <= separator_size)
             {
                 if (temp_clear != 1)
@@ -177,10 +140,10 @@ class Execute
                     return;
                 }
             }
-            
+			*/
             if (size_valid)
             {
-                Execution(separator, );
+                Execution(command);
             }
             
         }

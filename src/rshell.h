@@ -2,22 +2,21 @@
 #include <string>
 #include <stdio.h>
 #include <cstdlib>
-#include <unistd.b>
+#include <unistd.h>
 //include boost libraries 
 
 
 
-#include "command.h"
-#include "EC.h"
+#include "execute.h"
 
 using namespace std;
 
 class Rshell 
 {
     private:
-    
+		Execute e; 
         string cmd;
-    
+		
     public: 
     
         /*
@@ -26,8 +25,13 @@ class Rshell
             isExecute(vector_separator, vector_command, ...);
         
         */
-        
-        
+			 
+		char* convert_to_c_string(const string& s)
+		{
+			char* c = new char[s.size() + 1];
+			strcpy(c, s.c_str());
+			return c;
+		}
         // Constructor
         void rshell(string &c)
         {
@@ -41,12 +45,13 @@ class Rshell
                as cmd.
                */
             // below, specify which is which
-            
-            
-		    char arr1[512]; 
-		    char arr2[512];
-		    // Iterates through the input to locate if '#' exists
-		    for (unsigned i = 0; arr2[i] != NULL; ++i)
+            string something;
+		    char arr1[512];
+			char arr2[512];
+			cin.getline(arr2, 512);
+			cout << "arr2: " << arr2 << endl;
+			// Iterates through the input to locate if '#' exists
+		    for (unsigned i = 0; arr2[i] != '\0'; ++i)
 		    {
 			    if (arr2[i] == '#')
 			    {
@@ -65,17 +70,17 @@ class Rshell
     		
     		for (unsigned i = 0; i < 512; ++i)
     		{
-    			if (arr1[i] == "|")
+    			if (arr1[i] == '|')
     			{
     				vector_separator.push_back("||");
     				++i;
     			}
-    			if (arr1[i] == "&")
+    			if (arr1[i] == '&')
     			{
     				vector_separator.push_back("&&");
     				++i;
     			}
-    			if (arr1[i] == ";")
+    			if (arr1[i] == ';')
     			{
     				vector_separator.push_back(";");
     			}
@@ -138,8 +143,8 @@ class Rshell
     		    
     		    test_cmds.clear();
     		}
-    		
-    		isExecute(vector_separator, cmd_list);
+    	
+    		e.isExecute(vector_separator, cmd_list);
     		
     		
     		
