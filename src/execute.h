@@ -52,7 +52,7 @@ class Execute
         				}
     
         				pid_t PID = fork();
-        				pid_t PARENT;
+        				//pid_t PARENT;
         				
         				if (PID < 0)
         				{
@@ -84,7 +84,7 @@ class Execute
                             return;
                         }
                         pid_t PID = fork();
-                        pid_t PARENT;
+                        //pid_t PARENT;
                         
                         if (PID < 0)
                         {
@@ -126,7 +126,7 @@ class Execute
         				}
     
         				pid_t PID = fork();
-        				pid_t PARENT;
+        				//pid_t PARENT;
         				
         				if (PID < 0)
         				{
@@ -163,7 +163,7 @@ class Execute
                             return;
                         }
                         pid_t PID = fork();
-                        pid_t PARENT;
+                        //pid_t PARENT;
                         
                         if (PID < 0)
                         {
