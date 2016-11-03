@@ -54,7 +54,7 @@ class Rshell
 				    arr1[i] = NULL;
 				    break;
 			    }
-    			if (i == (strlen(arr2) - 1));
+    			if (i == (strlen(arr2) - 1))
     			{
     				strncpy(arr1, arr2, (i + 1));
     				arr1[i + 1] = NULL;
@@ -103,7 +103,7 @@ class Rshell
     		        {
     		            for (unsigned t = j; vector_command.at(i)[t] != '\0'; ++t)
     		            {
-    		                vector_command.at(i)[t] = vector_command.at(i)[k + 1];
+    		                vector_command.at(i)[t] = vector_command.at(i)[t + 1];
     		            }
     		        }
     		    }
@@ -126,10 +126,10 @@ class Rshell
     		vector<char *> test_cmds;
     		
     		char *pointer2;
-    		for (unsgined i = 0; i < vector_command.size(); ++i)
+    		for (unsigned i = 0; i < vector_command.size(); ++i)
     		{
     		    pointer2 = strtok(vector_command.at(i), " ");
-    		    while (pointer != NULL)
+    		    while (pointer2 != NULL)
     		    {
     		        test_cmds.push_back(pointer2);
     		        pointer2 = strtok(NULL, " ");

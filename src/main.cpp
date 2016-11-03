@@ -10,13 +10,11 @@ Brandon Lee
 #include <stdio.h>
 #include <cstdlib>
 
-#include "command.h"
-#include "EC.h"
 #include <unistd.h>
 
 using namespace std;
 
-int main(int argc, char** argv[])
+int main(int argc, char* argv[])
 {
 	string userInput;
 	char hostName[512];
