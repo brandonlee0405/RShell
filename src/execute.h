@@ -19,105 +19,206 @@ using namespace std;
 
 class Execute
 {
-    
-    private:
-        int counter; //counts processes to run
     public:
-        //add in constructor and other functions after main execution
-        char** execArgs(vector<char*>& vin)
-		{
-			char** tempArgv = &vin[0];	
-			return tempArgv;
-		}
 
-        int Execution(vector<vector<char *> > cmd)
+        void Execution(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, bool & check_previous, string previous, string exit1)
         {
-            /*  in here we will handle forking, execvp, and PID's 
-                see manpages for these things as well as directory checking, 
-                perror, etc.
-            */ 
-            int negStat = -1;
-          
-
-            // TODO: this part
-			vector<char *> temp;
-			temp = cmd[0];			//gets the first row of commands
-				
-			char** arg[512];
-			memset(arg, '\0', sizeof(arg)); 
-			
-
-            //TODO: check for exit then return a status value
-			for (int i = 0; i < temp.size(); ++i)
-			{
-				if (temp.at(i) == "exit")
-				{
-					return negStat;
-				}
-			}
-            
-            //use all this later, need to run preliminary arguments
-            pid_t pid; 
-            pid_t waitid;
-            int status;
-            //char const* cmdexe = ("ls", "-a", NULL);
-            
-            // creates child
-            pid = fork();
-            // if pid < 0 then it's an error
-            if (pid < 0)
-            {
-                perror("Error occurred!");
-            }
-            // pid == then child
-            else if (pid == 0)
-            {
-				cout << "I am executing" << endl;
-                if (execvp(arg[0], arg) < 0)
-                {
-                    cout << "-bash: " << arg[0] << " : command not found"
-                    << endl;
-                    //_exit() call exit here to kill the process if te execvp 
-                    //does not work with inputted commands. 
+            for (unsigned i = 0; i < separators.size() + 1; ++i)
+    	    {
+        		char *temp_arr[512];
+        		memset(temp_arr, '\0', sizeof(temp_arr));
+    
+        		if (separators.size() != 0)
+        		{
+        			if (i != 0)
+        			{
+        				previous = separators.at(i - 1);
+        			}
+        		}
+        		
+        		if (check_previous)
+        		{
+        			if (previous == ";")
+        			{
+        				
+        				for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
+        				{
+        					temp_arr[hh] = const_cast<char *>(cmds.at(i).at(hh));
+        				}
+        				if (strcmp(temp_arr[0], exit1.c_str()) == 0)
+        				{
+        					exit_check = true;
+        					return;
+        				}
+    
+        				pid_t PID = fork();
+        				pid_t PARENT;
+        				
+        				if (PID < 0)
+        				{
+        					perror("Error Occurred\n");
+        					exit(-1);
+        				}
+        				else if (PID == 0)
+        				{
+        					check_previous = true;
+        					int run = execvp(temp_arr[0], temp_arr);
+        					if (run < 0)
+        					{
+        						perror("Error Occurred\n");
+        						check_previous = false;
+        					}
+        				}
+    
+        			}
+    
+                    else if (previous == "&&")
+                    {
+                        for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
+                        {
+                            temp_arr[hh] = const_cast<char *>(cmds.at(i).at(hh));
+                        }
+                        if (strcmp(temp_arr[0], exit1.c_str()) == 0)
+                        {
+                            exit_check = true;
+                            return;
+                        }
+                        pid_t PID = fork();
+                        pid_t PARENT;
+                        
+                        if (PID < 0)
+                        {
+                            perror("Error Occurred\n");
+                            exit(-1);
+                        }
+    
+                        else if (PID == 0)
+                        {
+                            check_previous = true;
+                            int run = execvp(temp_arr[0], temp_arr);
+                            if (run < 0)
+                            {
+                                perror("Error Occurred\n");
+                                check_previous = false;
+                            }
+                        }
+    
+                    }
+                    else if (previous == "||")
+                    {
+                        check_previous = false;
+                    }
+    
+        		}
+        		else
+        		{
+        			if (previous == ";")
+        			{
+        				
+        				for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
+        				{
+        					temp_arr[hh] = const_cast<char *>(cmds.at(i).at(hh));
+        				}
+        				if (strcmp(temp_arr[0], exit1.c_str()) == 0)
+        				{
+        					exit_check = true;
+        					return;
+        				}
+    
+        				pid_t PID = fork();
+        				pid_t PARENT;
+        				
+        				if (PID < 0)
+        				{
+        					perror("Error Occurred\n");
+        					exit(-1);
+        				}
+        				else if (PID == 0)
+        				{
+        					check_previous = true;
+        					int run = execvp(temp_arr[0], temp_arr);
+        					if (run < 0)
+        					{
+        						perror("Error Occurred\n");
+        						check_previous = false;
+        					}
+        				}
+    
+        			}
+    
+                    else if (previous == "&&")
+                    {
+                        check_previous = false;
+                    }
+    
+                    else if (previous == "||")
+                    {
+                        for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
+                        {
+                            temp_arr[hh] = const_cast<char *>(cmds.at(i).at(hh));
+                        }
+                        if (strcmp(temp_arr[0], exit1.c_str()) == 0)
+                        {
+                            exit_check = true;
+                            return;
+                        }
+                        pid_t PID = fork();
+                        pid_t PARENT;
+                        
+                        if (PID < 0)
+                        {
+                            perror("Error Occurred\n");
+                            exit(-1);
+                        }
+    
+                        else if (PID == 0)
+                        {
+                            check_previous = true;
+                            int run = execvp(temp_arr[0], temp_arr);
+                            if (run < 0)
+                            {
+                                perror("Error Occurred\n");
+                                check_previous = false;
+                            }
+                        }
+                    }
                 }
-                _exit(0); //kills child processes and will return 0 as usual
-            }
-			waitpid(-1, &status, 0);
-            
+        	}
         }
 		 
     
-        void isExecute(vector<string> separator, vector<vector<char *> > command)
+        void isExecute(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check)
         {
-            string exit = "exit";
+        	string previous = ";";
+        	string exit1 = "exit";
             string clear = "clear";
+            bool check_previous = true;
             int temp_clear = 0;
-            
-            int command_size = command.size();
-            int separator_size = separator.size();
+                    
+            int command_size = cmds.size();
+            int separator_size = separators.size();
             bool size_valid = true;
-            
-            if (separator.size() == 0)
+                    
+            if (separators.size() == 0)
             {
-                if (command.size() == 1)
+                if (cmds.size() == 1)
                 {
                     // Checks if there is exit
-                    if (strcmp(exit.c_str(), command.at(0).at(0)) == 0)
+                    if (strcmp(exit1.c_str(), cmds.at(0).at(0)) == 0)
                     {
                         // this needs to exit the terminal
-                        
-                        
+                        exit_check = true;      
                         return;
                     }
-                    
+                            
                     // Checks if there is clear
-                    else if (strcmp(clear.c_str(), command.at(0).at(0)) == 0)
+                    else if (strcmp(clear.c_str(), cmds.at(0).at(0)) == 0)
                     {
                         temp_clear = 1;
                     }
                 }
             }
-            
+        
             if (command_size == 0)
             {
                 if (separator_size != 0)
@@ -130,8 +231,7 @@ class Execute
                     return;
                 }
             }
-           
-		   /*
+                    
             if (command_size <= separator_size)
             {
                 if (temp_clear != 1)
@@ -140,12 +240,11 @@ class Execute
                     return;
                 }
             }
-			*/
+            
             if (size_valid)
             {
-                Execution(command);
+                Execution(separators, cmds, exit_check, check_previous, previous, exit1);
             }
-            
         }
 };
 
