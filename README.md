@@ -15,5 +15,5 @@ Unable to get connectors to work properly besides semicolons.
 
 Comments have not yet been integrated.
 
-A call to exit will loop back to the prompt with odd output. 
+Outputs an error for the first command however, all single commands after that work well. 
 
