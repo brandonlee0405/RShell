@@ -54,7 +54,8 @@ class Execute
             // ============= TEST ==============
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
-              //isTest(temp_arr, check_previous);
+              Test icle;
+              icle.isTest(temp_arr, check_previous);
             }
             // ==================================
 
