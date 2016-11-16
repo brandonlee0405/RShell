@@ -36,6 +36,8 @@ int main(int argc, char* argv[])
 
     vector<vector<char *> > cmd_list;
     vector<char *> temp_cmds;
+		vector<string> vector_separator;
+		vector<int> parenthesis;
 
 		cin.getline(arr2,512);
 
@@ -54,26 +56,42 @@ int main(int argc, char* argv[])
     		arr1[i + 1] = '\0';
     	}
     }
-
-    vector<string> vector_separator;
-
-    for (unsigned i = 0; i < 512; ++i)
-    {
-    	if (arr1[i] == '|')
-    	{
-    		vector_separator.push_back("||");
-    		++i;
-    	}
-    	if (arr1[i] == '&')
-    	{
-    		vector_separator.push_back("&&");
-    		++i;
-    	}
-    	if (arr1[i] == ';')
-    	{
-    		vector_separator.push_back(";");
-    	}
-    }
+		int sepCount = 0;
+		int parCount = 0;
+		int parenCount = 0;
+		for (unsigned i = 0; arr1[i] != '\0'; ++i)
+		{
+			if (arr1[i] == ';')
+			{
+				vector_separator.push_back(";");
+				sepCount++;
+			}
+			if (arr1[i] == '&')
+			{
+				vector_separator.push_back("&&");
+				i++;
+				sepCount++;
+			}
+			if (arr1[i] == '|')
+			{
+				vector_separator.push_back("||");
+				i++;
+				sepCount++;
+			}
+			if (arr1[i] == '(')
+			{
+				parenthesis.push_back(sepCount + 1);
+				parenthesis.push_back(sepCount + 1);
+				parenCount++;
+				parCount++;
+			}
+			if (arr1[i] == ')')
+			{
+				parenthesis.at((parCount * 2) - 1) = sepCount;
+				parCount--;
+				parenCount++;
+			}
+		}
 
     // Using the strtok, split the user input into tokens and store it
     // to a new vector;
@@ -119,6 +137,41 @@ int main(int argc, char* argv[])
 			}
 		}
 
+		for (unsigned i = 0; i < vector_command.size(); i++)
+		{
+			for (unsigned j = 0; vector_command.at(i)[j] != '\0'; j++)
+			{
+				if( vector_command.at(i)[j] == '(')
+				{
+					for (unsigned k = j; vector_command.at(i)[k] != '\0'; k++)
+					{
+						vector_command.at(i)[k] = vector_command.at(i)[k + 1];
+					}
+				}
+				if (vector_command.at(i)[j] == ')')
+				{
+					for (unsigned k = j; vector_command.at(i)[k] != '\0'; k++)
+					{
+						vector_command.at(i)[k] = vector_command.at(i)[k + 1];
+					}
+				}
+				if (vector_command.at(i)[j] == '(')
+				{
+					for (unsigned k = j; vector_command.at(i)[k] != '\0'; k++)
+					{
+						vector_command.at(i)[k] = vector_command.at(i)[k + 1];
+					}
+				}
+				if (vector_command.at(i)[j] == ')')
+				{
+					for (unsigned k = j; vector_command.at(i)[k] != '\0'; k++)
+					{
+						vector_command.at(i)[k] = vector_command.at(i)[k + 1];
+					}
+				}
+			}
+		}
+
     // Gets rid of quotations when echoing user input
     // i.e: echo "print" --> print (not "print")
     for (unsigned i = 0; i < vector_command.size(); ++i)
@@ -137,19 +190,25 @@ int main(int argc, char* argv[])
   	char *pointer2;
     for (unsigned i = 0; i < vector_command.size(); ++i)
     {
-      pointer2 = strtok(vector_command.at(i), " ");
+      pointer2 = strtok(vector_command.at(i), " \t\n");
       while (pointer2 != NULL)
       {
         temp_cmds.push_back(pointer2);
-        pointer2 = strtok(NULL, " ");
+        pointer2 = strtok(NULL, " \t\n");
       }
       cmd_list.push_back(temp_cmds);
 
       temp_cmds.clear();
     }
-    Execute te;
-    te.isExecute(vector_separator, cmd_list, check_exit, just_temp);
-
+		if ((parCount % 2) == 0)
+		{
+			Execute te;
+	    te.isExecute(vector_separator, cmd_list, check_exit, just_temp, parenthesis);
+		}
+		else
+		{
+			cout << "Error: odd numbers of parenthesis." << endl;
+		}
     // Clears the vectors, arrays, pointers
     for (unsigned i = 0; i < 512; ++i)
     {
@@ -161,6 +220,7 @@ int main(int argc, char* argv[])
     pointer = NULL;
     cmd_list.clear();
     temp_cmds.clear();
+		parenthesis.clear();
 
 	}while (!check_exit);
 

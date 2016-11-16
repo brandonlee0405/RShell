@@ -13,60 +13,147 @@ class Test {
         We will use the S_ISREG and S_ISDIR macros along with stat()
         functionality to accomplish this further.
         */
-
         struct stat sb;
-        bool isDir; //checks if directory
-        bool isFile; //checks if it is a file
         string flag;
         flag = arr[1];
-        //set flag to whatever is after the brackets; i.e -e, -d, -f
 
-        //checks whether the flag is valid
-        if (flag != "-e" || flag != "-f" || flag != "-d")
+        if (flag != "-e" && flag != "-d" && flag != "-f")
         {
-          //if null, return default as "-e" flag
           if (arr[2] == '\0')
           {
             flag = "-e";
+
+            // This checks if there is a slash before test and fixes it
+            // i.e: [ /test/file/path ]
+            string test = arr[1];
+            string test2;
+            if (test.at(0) == '/')
+            {
+              for (unsigned i = 0; i < test.size(); ++i)
+              {
+                test2.push_back(test.at(i));
+              }
+              arr[1] = (char *)test2.c_str();
+            }
           }
-          //return error if not
           else
           {
-            cout << "Error. Did not use -e, -d, or -f" << endl;
+            cout << "Error. Did not use -e, -d, or -f." <<endl;
             exit(1);
           }
         }
 
-        //test cases to follow
-
-        //check if flag is "-e"
-        if (flag == "-e")
+        if (flag == "-d")
         {
-
-          bool isDir = S_ISDIR(sb.st_mode);
-
-          bool isFile = S_ISREG(sb.st_mode);
-
-          if (isFile == true || isDir == true)
+          // This checks if there is a slash before test and fixes it
+          // i.e: [ /test/file/path ]
+          string test = arr[2];
+          string test2;
+          if (test.at(0) == '/')
           {
-            cout << "(True)" << endl;
-
+            for (unsigned i = 0; i < test.size(); ++i)
+            {
+              test2.push_back(test.at(i));
+            }
+            arr[1] = (char *)test2.c_str();
+          }
+          if (stat(arr[2], & sb) == -1)
+          {
+            cout << "(False)" << endl;
+            check_prev = false;
             return;
           }
           else
           {
-            cout << "(False)" << endl;
-
-            return;
+            switch (sb.st_mode & S_IFMT)
+            {
+              case S_IFDIR: printf("(True)\n"); check_prev = true; break;
+              default: printf("(False)\n"); check_prev = false; break;
+            }
           }
         }
-
-        //check if flag is "-d"
-        if (flag == "-d")
+        else if (flag == "-f")
         {
-
+          // This checks if there is a slash before test and fixes it
+          // i.e: [ /test/file/path ]
+          string test = arr[2];
+          string test2;
+          if (test.at(0) == '/')
+          {
+            for (unsigned i = 0; i < test.size(); ++i)
+            {
+              test2.push_back(test.at(i));
+            }
+            arr[1] = (char *)test2.c_str();
+          }
+          if (stat(arr[2], & sb) == -1)
+          {
+            cout << "(False)" << endl;
+            check_prev = false;
+            return;
+          }
+          else
+          {
+            switch (sb.st_mode & S_IFMT)
+            {
+              case S_IFREG: printf("(True)\n"); check_prev = true; break;
+              default: printf("(False)\n"); check_prev = false; break;
+            }
+          }
         }
-
+        else
+        {
+          if (arr[2] != '\0')
+          {
+            // This checks if there is a slash before test and fixes it
+            // i.e: [ /test/file/path ]
+            string test = arr[1];
+            string test2;
+            if (test.at(0) == '/')
+            {
+              for (unsigned i = 0; i < test.size(); ++i)
+              {
+                test2.push_back(test.at(i));
+              }
+              arr[2] = (char *)test2.c_str();
+            }
+          }
+          if (arr[2] == '\0')
+          {
+            if (stat(arr[1], & sb) == -1)
+            {
+              cout << "(False)" << endl;
+              check_prev = false;
+              return;
+            }
+            else
+            {
+              switch (sb.st_mode & S_IFMT)
+              {
+                case S_IFREG: printf("(True)\n"); check_prev = true; break;
+                case S_IFDIR: printf("(True)\n"); check_prev = true; break;
+                default: printf("(False)\n"); check_prev = false; break;
+              }
+              return;
+            }
+          }
+          if (stat(arr[2], & sb) == -1)
+          {
+            cout << "(False)" << endl;
+            check_prev = false;
+            return;
+          }
+          else
+          {
+            switch (sb.st_mode & S_IFMT)
+            {
+              case S_IFREG: printf("(True)\n"); check_prev = true; break;
+              case S_IFDIR: printf("(True)\n"); check_prev = true; break;
+              default: printf("(False)\n"); check_prev = false; break;
+            }
+          }
+        }
+        return;
     }
 };
 

@@ -22,7 +22,7 @@ class Execute
 {
   public:
 
-    void Execution(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, bool & check_previous, string previous, string exit1, string test, int flag_check)
+    void Execution(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, bool & check_previous, string previous, string exit1, string test, int flag_check, vector<int> & parenthesis)
     {
       for (unsigned i = 0; i < separators.size() + 1; ++i)
       {
@@ -49,6 +49,7 @@ class Execute
           	{
           		exit_check = true;
           	  exit(0);
+              return;
             }
 
             // ============= TEST ==============
@@ -194,7 +195,7 @@ class Execute
         }
       }
     }
-    void isExecute(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, int flag_check)
+    void isExecute(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, int flag_check, vector<int> & parenthesis)
     {
     	string previous = ";";
     	string exit1 = "exit";
@@ -243,7 +244,6 @@ class Execute
           return;
         }
       }
-
       if (command_size <= separator_size)
       {
         if (temp_clear != 1)
@@ -255,7 +255,7 @@ class Execute
 
       if (size_valid)
       {
-        Execution(separators, cmds, exit_check, check_previous, previous, exit1, test, flag_check);
+        Execution(separators, cmds, exit_check, check_previous, previous, exit1, test, flag_check, parenthesis);
       }
     }
 };
