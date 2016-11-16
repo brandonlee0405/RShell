@@ -26,7 +26,7 @@ class Execute
     {
       for (unsigned i = 0; i < separators.size() + 1; ++i)
       {
-      	char *temp_arr[512];
+      	char *temp_arr[1024];
         memset(temp_arr, '\0', sizeof(temp_arr));
 
         if (separators.size() != 0)
@@ -51,7 +51,7 @@ class Execute
           	  exit(0);
               return;
             }
-
+            //this will handle the test command with any flags that may arise
             // ============= TEST ==============
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
@@ -59,7 +59,6 @@ class Execute
               icle.isTest(temp_arr, check_previous);
             }
             // ==================================
-
             else
             {
       				pid_t PID = fork();
@@ -195,7 +194,8 @@ class Execute
         }
       }
     }
-    void isExecute(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, int flag_check, vector<int> & parenthesis)
+    void isExecute(vector<string> separators, vector<vector<char *> >
+    cmds, bool & exit_check, int flag_check, vector<int> & parenthesis)
     {
     	string previous = ";";
     	string exit1 = "exit";

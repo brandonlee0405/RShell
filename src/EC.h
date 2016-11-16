@@ -8,6 +8,7 @@
 
 using namespace std;
 
+//extra credit getlogin and hostname prompt, pretty self explanatory
 void prompt(){
 	char* name = getlogin();
 
@@ -15,9 +16,9 @@ void prompt(){
 	{
 		cout << "Error: Cannot get login info." << endl;
 		exit(1);
-	}	
+	}
 
-	char hostname[256]; 
+	char hostname[256];
 
 	int hostcheck = gethostname(hostname, 255);
 
