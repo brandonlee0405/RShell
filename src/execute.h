@@ -16,17 +16,19 @@
 
 using namespace std;
 
-
-
 class Execute
 {
   public:
 
-    void Execution(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, bool & check_previous, string previous, string exit1, string test, int flag_check, vector<int> & parenthesis)
+    void Execution(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, bool & check_previous, string previous, string exit1, string test, int flag_check, vector<int> & parenthesis, int exit_loop)
     {
       for (unsigned i = 0; i < separators.size() + 1; ++i)
       {
-      	char *temp_arr[1024];
+        if (exit_loop > 0)
+        {
+          return;
+        }
+      	char *temp_arr[512];
         memset(temp_arr, '\0', sizeof(temp_arr));
 
         if (separators.size() != 0)
@@ -51,7 +53,7 @@ class Execute
           	  exit(0);
               return;
             }
-            //this will handle the test command with any flags that may arise
+
             // ============= TEST ==============
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
@@ -59,9 +61,264 @@ class Execute
               icle.isTest(temp_arr, check_previous);
             }
             // ==================================
+
             else
             {
+              if (flag_check > 0)
+              {
+                if (parenthesis.size() != 0)
+                {
+                  int start = parenthesis.at(0);
+                  int end = parenthesis.at(1);
+                  int paren_size = parenthesis.size();
+
+                  if (paren_size == 2)
+                  {
+                    parenthesis.pop_back();
+                    parenthesis.pop_back();
+                  }
+                  else
+                  {
+                    for (unsigned i = 0; i + 2 < paren_size; ++i)
+                    {
+                      parenthesis.at(i) = parenthesis.at(i + 2);
+                    }
+                    parenthesis.pop_back();
+                    parenthesis.pop_back();
+                  }
+                  vector<string> new_connector;
+                  for (unsigned i = start - 1; i < end; ++i)
+                  {
+                    new_connector.push_back(separators.at(i));
+                  }
+
+                  vector<vector<char *> > new_cmd;
+                  for (unsigned i = start - 1; i < end; ++i)
+                  {
+                    new_cmd.push_back(cmds.at(i));
+                  }
+
+                  int new_check = 0;
+                  isExecute(new_connector, new_cmd, exit_check, new_check, parenthesis);
+                  if (exit_check)
+                  {
+                    exit(0);
+                  }
+
+                }
+              }
       				pid_t PID = fork();
+      				//pid_t PARENT;
+
+      				if (PID < 0)
+      				{
+      					perror("Error Occurred\n");
+      					exit(-1);
+      				}
+      				else if (PID == 0)
+      				{
+      					check_previous = true;
+      					int run = execvp(temp_arr[0], temp_arr);
+      					if (run < 0)
+      					{
+      						perror("Error Occurred\n");
+      						check_previous = false;
+
+                  if (separators.at(0) == "&&")
+                  {
+                    if (parenthesis.size() != 0)
+                    {
+                      if (parenthesis.at(0) != 1)
+                      {
+                        if (check_previous == false)
+                        {
+                          cmds.clear();
+                          separators.clear();
+                          exit_loop++;
+                          return;
+                        }
+                      }
+                    }
+                  }
+      					}
+      				}
+            }
+    			}
+
+          else if (previous == "&&")
+          {
+            for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
+            {
+              temp_arr[hh] = const_cast<char *>(cmds.at(i).at(hh));
+            }
+            if (strcmp(temp_arr[0], exit1.c_str()) == 0)
+            {
+              exit_check = true;
+              return;
+            }
+            // ===== TEST
+            if (strcmp(temp_arr[0], test.c_str()) == 0)
+            {
+              Test icle;
+              icle.isTest(temp_arr, check_previous);
+              return;
+            }
+            // =====
+            else
+            {
+              if (flag_check > 0)
+              {
+                if (parenthesis.size() != 0)
+                {
+                  int start = parenthesis.at(0);
+                  int end = parenthesis.at(1);
+                  int paren_size = parenthesis.size();
+
+                  if (paren_size == 2)
+                  {
+                    parenthesis.pop_back();
+                    parenthesis.pop_back();
+                  }
+                  else
+                  {
+                    for (unsigned i = 0; i + 2 < paren_size; ++i)
+                    {
+                      parenthesis.at(i) = parenthesis.at(i + 2);
+                    }
+                    parenthesis.pop_back();
+                    parenthesis.pop_back();
+                  }
+                  vector<string> new_connector;
+                  for (unsigned i = start - 1; i < end; ++i)
+                  {
+                    new_connector.push_back(separators.at(i));
+                  }
+
+                  vector<vector<char *> > new_cmd;
+                  for (unsigned i = start - 1; i < end; ++i)
+                  {
+                    new_cmd.push_back(cmds.at(i));
+                  }
+
+                  int new_check = 0;
+                  isExecute(new_connector, new_cmd, exit_check, new_check, parenthesis);
+                  if (exit_check)
+                  {
+                    exit(0);
+                  }
+                }
+              }
+            }
+            pid_t PID = fork();
+            //pid_t PARENT;
+
+            if (PID < 0)
+            {
+              perror("Error Occurred\n");
+              exit(-1);
+            }
+            else if (PID == 0)
+            {
+              check_previous = true;
+              int run = execvp(temp_arr[0], temp_arr);
+              if (run < 0)
+              {
+                perror("Error Occurred\n");
+                check_previous = false;
+
+                if (separators.at(0) == "&&")
+                {
+                  if (parenthesis.size() != 0)
+                  {
+                    if (parenthesis.at(0) > 1)
+                    {
+                      if (check_previous == true)
+                      {
+                        cmds.clear();
+                        separators.clear();
+                        exit_loop++;
+                        return;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          else if (previous == "||")
+          {
+            check_previous = true;
+            if (parenthesis.size() == 2)
+            {
+              return;
+            }
+          }
+
+        }
+    		else
+    		{
+    			if (previous == ";")
+    			{
+    				for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
+    				{
+    					temp_arr[hh] = const_cast<char *>(cmds.at(i).at(hh));
+    				}
+    				if (strcmp(temp_arr[0], exit1.c_str()) == 0)
+    				{
+    					exit_check = true;
+    					return;
+    				}
+            if (strcmp(temp_arr[0], test.c_str()) == 0)
+            {
+              Test icle;
+              icle.isTest(temp_arr, check_previous);
+              return;
+            }
+            else
+            {
+              if (flag_check > 0)
+              {
+                if (parenthesis.size() != 0)
+                {
+                  int start = parenthesis.at(0);
+                  int end = parenthesis.at(1);
+                  int paren_size = parenthesis.size();
+
+                  if (paren_size == 2)
+                  {
+                    parenthesis.pop_back();
+                    parenthesis.pop_back();
+                  }
+                  else
+                  {
+                    for (unsigned i = 0; i + 2 < paren_size; ++i)
+                    {
+                      parenthesis.at(i) = parenthesis.at(i + 2);
+                    }
+                    parenthesis.pop_back();
+                    parenthesis.pop_back();
+                  }
+                  vector<string> new_connector;
+                  for (unsigned i = start - 1; i < end; ++i)
+                  {
+                    new_connector.push_back(separators.at(i));
+                  }
+
+                  vector<vector<char *> > new_cmd;
+                  for (unsigned i = start - 1; i < end; ++i)
+                  {
+                    new_cmd.push_back(cmds.at(i));
+                  }
+
+                  int new_check = 0;
+                  isExecute(new_connector, new_cmd, exit_check, new_check, parenthesis);
+                  if (exit_check)
+                  {
+                    exit(0);
+                  }
+                }
+              }
+              pid_t PID = fork();
       				//pid_t PARENT;
 
       				if (PID < 0)
@@ -80,84 +337,15 @@ class Execute
       					}
       				}
             }
-
     			}
-
-          else if (previous == "&&")
-          {
-            for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
-            {
-              temp_arr[hh] = const_cast<char *>(cmds.at(i).at(hh));
-            }
-            if (strcmp(temp_arr[0], exit1.c_str()) == 0)
-            {
-              exit_check = true;
-              return;
-            }
-            pid_t PID = fork();
-            //pid_t PARENT;
-
-            if (PID < 0)
-            {
-              perror("Error Occurred\n");
-              exit(-1);
-            }
-
-            else if (PID == 0)
-            {
-              check_previous = true;
-              int run = execvp(temp_arr[0], temp_arr);
-              if (run < 0)
-              {
-                  perror("Error Occurred\n");
-                  check_previous = false;
-              }
-            }
-
-          }
-          else if (previous == "||")
-          {
-            check_previous = false;
-          }
-
-        }
-    		else
-    		{
-    			if (previous == ";")
-    			{
-    				for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
-    				{
-    					temp_arr[hh] = const_cast<char *>(cmds.at(i).at(hh));
-    				}
-    				if (strcmp(temp_arr[0], exit1.c_str()) == 0)
-    				{
-    					exit_check = true;
-    					return;
-    				}
-
-    				pid_t PID = fork();
-    				//pid_t PARENT;
-
-    				if (PID < 0)
-    				{
-    					perror("Error Occurred\n");
-    					exit(-1);
-    				}
-    				else if (PID == 0)
-    				{
-    					check_previous = true;
-    					int run = execvp(temp_arr[0], temp_arr);
-    					if (run < 0)
-    					{
-    						perror("Error Occurred\n");
-    						check_previous = false;
-    					}
-    				}
-    			}
-
           else if (previous == "&&")
           {
               check_previous = false;
+              if (parenthesis.size() == 2)
+              {
+                exit(0);
+                return;
+              }
           }
 
           else if (previous == "||")
@@ -170,6 +358,58 @@ class Execute
             {
               exit_check = true;
               return;
+            }
+
+            if (strcmp(temp_arr[0], test.c_str()) == 0)
+            {
+              Test icle;
+              icle.isTest(temp_arr, check_previous);
+              return;
+            }
+            else
+            {
+              if (flag_check > 0)
+              {
+                if (parenthesis.size() != 0)
+                {
+                  int start = parenthesis.at(0);
+                  int end = parenthesis.at(1);
+                  int paren_size = parenthesis.size();
+
+                  if (paren_size == 2)
+                  {
+                    parenthesis.pop_back();
+                    parenthesis.pop_back();
+                  }
+                  else
+                  {
+                    for (unsigned i = 0; i + 2 < paren_size; ++i)
+                    {
+                      parenthesis.at(i) = parenthesis.at(i + 2);
+                    }
+                    parenthesis.pop_back();
+                    parenthesis.pop_back();
+                  }
+                  vector<string> new_connector;
+                  for (unsigned i = start - 1; i < end; ++i)
+                  {
+                    new_connector.push_back(separators.at(i));
+                  }
+
+                  vector<vector<char *> > new_cmd;
+                  for (unsigned i = start - 1; i < end; ++i)
+                  {
+                    new_cmd.push_back(cmds.at(i));
+                  }
+
+                  int new_check = 0;
+                  isExecute(new_connector, new_cmd, exit_check, new_check, parenthesis);
+                  if (exit_check)
+                  {
+                    exit(0);
+                  }
+                }
+              }
             }
             pid_t PID = fork();
             //pid_t PARENT;
@@ -194,8 +434,7 @@ class Execute
         }
       }
     }
-    void isExecute(vector<string> separators, vector<vector<char *> >
-    cmds, bool & exit_check, int flag_check, vector<int> & parenthesis)
+    void isExecute(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, int flag_check, vector<int> & parenthesis)
     {
     	string previous = ";";
     	string exit1 = "exit";
@@ -252,10 +491,14 @@ class Execute
           return;
         }
       }
-
+      int exit_loop = 0;
       if (size_valid)
       {
-        Execution(separators, cmds, exit_check, check_previous, previous, exit1, test, flag_check, parenthesis);
+        Execution(separators, cmds, exit_check, check_previous, previous, exit1, test, flag_check, parenthesis, exit_loop);
+      }
+      if (exit_loop > 0)
+      {
+        return;
       }
     }
 };

@@ -137,12 +137,10 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		//further parsing for parentheses to be later used
 		for (unsigned i = 0; i < vector_command.size(); i++)
 		{
 			for (unsigned j = 0; vector_command.at(i)[j] != '\0'; j++)
 			{
-				//removing parentheses and replacing with the whitespace
 				if( vector_command.at(i)[j] == '(')
 				{
 					for (unsigned k = j; vector_command.at(i)[k] != '\0'; k++)

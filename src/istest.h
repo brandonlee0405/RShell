@@ -42,23 +42,17 @@ class Test {
             exit(1);
           }
         }
-        //TODO: REMOVE reach comment
-        //runs when flag is -d
+
         if (flag == "-d")
         {
-
-
           // This checks if there is a slash before test and fixes it
           // i.e: [ /test/file/path ]
           string test = arr[2];
           string test2;
-
-          //looks for forward slash
           if (test.at(0) == '/')
           {
             for (unsigned i = 0; i < test.size(); ++i)
             {
-              //pushing back the element for later use
               test2.push_back(test.at(i));
             }
             arr[1] = (char *)test2.c_str();
@@ -68,7 +62,6 @@ class Test {
             cout << "(False)" << endl;
             check_prev = false;
             return;
-
           }
           else
           {
@@ -108,8 +101,6 @@ class Test {
             }
           }
         }
-        //TODO: remove these reach comments
-        //cout << "reached here 2" << endl;
         else
         {
           if (arr[2] != '\0')
@@ -154,7 +145,6 @@ class Test {
           }
           else
           {
-
             switch (sb.st_mode & S_IFMT)
             {
               case S_IFREG: printf("(True)\n"); check_prev = true; break;
