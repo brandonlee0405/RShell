@@ -40,7 +40,7 @@ class Execute
         }
 
         if (check_previous)
-      	{
+        {
         	if (previous == ";")
           {
       			for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
@@ -53,10 +53,10 @@ class Execute
           	  exit(0);
               return;
             }
-
             // ============= TEST ==============
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
+              cout << "Dumm1" << endl;
               Test icle;
               icle.isTest(temp_arr, check_previous);
             }
@@ -108,19 +108,31 @@ class Execute
                 }
               }
       				pid_t PID = fork();
-      				//pid_t PARENT;
+      				pid_t PARENT;
 
       				if (PID < 0)
       				{
+                cout << "exedum1" << endl;
       					perror("Error Occurred\n");
       					exit(-1);
       				}
-      				else if (PID == 0)
+              else if (PID != 0)
+              {
+                if ((PARENT = wait(NULL)) < 0)
+                {
+                  perror("Waiting Error");
+                  exit(-1);
+                }
+              }
+      				else
       				{
       					check_previous = true;
       					int run = execvp(temp_arr[0], temp_arr);
+                //TODO:
+                //cout << run << endl;
       					if (run < 0)
       					{
+                  //cout << "exedum" << endl;
       						perror("Error Occurred\n");
       						check_previous = false;
 
@@ -144,9 +156,9 @@ class Execute
       				}
             }
     			}
-
           else if (previous == "&&")
           {
+            //cout << previous << endl;
             for (unsigned hh = 0; hh < cmds.at(i).size(); ++hh)
             {
               temp_arr[hh] = const_cast<char *>(cmds.at(i).at(hh));
@@ -159,6 +171,7 @@ class Execute
             // ===== TEST
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
+              cout << "dumm2" << endl;
               Test icle;
               icle.isTest(temp_arr, check_previous);
               return;
@@ -210,19 +223,29 @@ class Execute
               }
             }
             pid_t PID = fork();
-            //pid_t PARENT;
+            pid_t PARENT;
 
             if (PID < 0)
             {
+              //cout << "piderrr" << endl;
               perror("Error Occurred\n");
               exit(-1);
             }
-            else if (PID == 0)
+            else if (PID != 0)
+            {
+              if ((PARENT = wait(NULL)) < 0)
+              {
+                perror("Waiting Error");
+                exit(-1);
+              }
+            }
+            else
             {
               check_previous = true;
               int run = execvp(temp_arr[0], temp_arr);
               if (run < 0)
               {
+                //cout << "belpid" << endl;
                 perror("Error Occurred\n");
                 check_previous = false;
 
@@ -270,6 +293,7 @@ class Execute
     				}
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
+              //cout << "dumm3" << endl;
               Test icle;
               icle.isTest(temp_arr, check_previous);
               return;
@@ -319,19 +343,29 @@ class Execute
                 }
               }
               pid_t PID = fork();
-      				//pid_t PARENT;
+      				pid_t PARENT;
 
       				if (PID < 0)
       				{
+                //cout << "pid2" << endl;
       					perror("Error Occurred\n");
       					exit(-1);
       				}
-      				else if (PID == 0)
+              else if (PID != 0)
+              {
+                if ((PARENT = wait(NULL)) < 0)
+                {
+                  perror("Waiting Error");
+                  exit(-1);
+                }
+              }
+      				else
       				{
       					check_previous = true;
       					int run = execvp(temp_arr[0], temp_arr);
       					if (run < 0)
       					{
+                  //cout << "belpid2" << endl;
       						perror("Error Occurred\n");
       						check_previous = false;
       					}
@@ -362,6 +396,7 @@ class Execute
 
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
+              cout << "dumm4" << endl;
               Test icle;
               icle.isTest(temp_arr, check_previous);
               return;
@@ -412,20 +447,29 @@ class Execute
               }
             }
             pid_t PID = fork();
-            //pid_t PARENT;
+            pid_t PARENT;
 
             if (PID < 0)
             {
+              //cout << "pid3" << endl;
               perror("Error Occurred\n");
               exit(-1);
             }
-
-            else if (PID == 0)
+            else if (PID != 0)
+            {
+              if ((PARENT = wait(NULL)) < 0)
+              {
+                perror("Waiting Error");
+                exit(-1);
+              }
+            }
+            else
             {
               check_previous = true;
               int run = execvp(temp_arr[0], temp_arr);
               if (run < 0)
               {
+                //cout << "again" << endl;
                   perror("Error Occurred\n");
                   check_previous = false;
               }

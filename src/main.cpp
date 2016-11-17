@@ -28,8 +28,8 @@ int main(int argc, char* argv[])
 	{
 		prompt();
 
-		char arr1[512];
-		char arr2[512];
+		char arr1[256];
+		char arr2[256];
 
 		int just_temp = 0;
 		int sz = 0;
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 		vector<string> vector_separator;
 		vector<int> parenthesis;
 
-		cin.getline(arr2,512);
+		cin.getline(arr2,256);
 
 		// Iterates through the input to locate if '#' exists
 		for (unsigned i = 0; arr2[i] != '\0'; ++i)
@@ -207,10 +207,10 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-			cout << "Error: odd numbers of parenthesis." << endl;
+			cout << "Error: odd numbers of parentheses." << endl;
 		}
     // Clears the vectors, arrays, pointers
-    for (unsigned i = 0; i < 512; ++i)
+    for (unsigned i = 0; i < 256; ++i)
     {
       arr1[i] = '\0';
       arr2[i] = '\0';
