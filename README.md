@@ -18,11 +18,11 @@ flags such as -e, -d, and -f.
 When using the semicolon connect (";"), there is an issue with using the test command properly on the right-hand side. 
   - Response is either a segmentation fault or general error message from within the program
   
-When entering longer commands, the precedence tests will sometimes work in an incorrect order.
+When entering longer commands, the precedence tests will sometimes work in an incorrect order when using the "test" command.
   - Reponse is incorrect ordering of the commands entered
   
 Sometimes, the user information on the left-hand side of the terminal disappears after any basic command
-  - Doesn't happen often but still comes up sometimes. 
+  - Doesn't happen often but still comes up in very rare and specific instances.
   
 A segmentation fault will sometimes occur if multiple "test" commands are entered in a single line. 
 
