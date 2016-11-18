@@ -56,7 +56,7 @@ class Execute
             // ============= TEST ==============
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
-              cout << "Dumm1" << endl;
+              //cout << "Dumm1" << endl;
               Test icle;
               icle.isTest(temp_arr, check_previous);
             }
@@ -112,7 +112,7 @@ class Execute
 
       				if (PID < 0)
       				{
-                cout << "exedum1" << endl;
+                //cout << "exedum1" << endl;
       					perror("Error Occurred\n");
       					exit(-1);
       				}
@@ -168,10 +168,11 @@ class Execute
               exit_check = true;
               return;
             }
+            //from below, will check if any test functionality is called
             // ===== TEST
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
-              cout << "dumm2" << endl;
+              //cout << "dumm2" << endl;
               Test icle;
               icle.isTest(temp_arr, check_previous);
               return;
@@ -396,7 +397,7 @@ class Execute
 
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
-              cout << "dumm4" << endl;
+              //cout << "dumm4" << endl;
               Test icle;
               icle.isTest(temp_arr, check_previous);
               return;
@@ -538,7 +539,8 @@ class Execute
       int exit_loop = 0;
       if (size_valid)
       {
-        Execution(separators, cmds, exit_check, check_previous, previous, exit1, test, flag_check, parenthesis, exit_loop);
+        Execution(separators, cmds, exit_check, check_previous, previous, exit1,
+          test, flag_check, parenthesis, exit_loop);
       }
       if (exit_loop > 0)
       {
