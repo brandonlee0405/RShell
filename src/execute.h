@@ -401,8 +401,8 @@ class Execute
             if (strcmp(temp_arr[0], test.c_str()) == 0)
             {
               //cout << "dumm4" << endl;
-              Test icle;
-              icle.isTest(temp_arr, check_previous);
+              Test icle2;
+              icle2.isTest(temp_arr, check_previous);
               return;
             }
             else
