@@ -1,4 +1,4 @@
-FLAGS = -Wall -Werror -ansi -pedantic
+FLAGS = -Wall -ansi -pedantic
 
 all: rshell
 
