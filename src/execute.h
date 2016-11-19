@@ -12,7 +12,7 @@
 #include <unistd.h>
 //#include <boost/algorithm/string.hpp>
 
-#include "isTest.h"
+#include "istest.h"
 
 using namespace std;
 
