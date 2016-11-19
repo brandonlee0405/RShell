@@ -12,14 +12,15 @@
 #include <unistd.h>
 //#include <boost/algorithm/string.hpp>
 
-#include "isTest.h"
+#include "istest.h"
 
 using namespace std;
 
 class Execute
 {
   public:
-
+    //runs the execution where certain conditions will be handled such as various commands that may
+    // be entered
     void Execution(vector<string> separators, vector<vector<char *> > cmds, bool & exit_check, bool & check_previous, string previous, string exit1, string test, int flag_check, vector<int> & parenthesis, int exit_loop)
     {
       for (unsigned i = 0; i < separators.size() + 1; ++i)
@@ -28,6 +29,7 @@ class Execute
         {
           return;
         }
+        //input stored in temp arr
       	char *temp_arr[512];
         memset(temp_arr, '\0', sizeof(temp_arr));
 
