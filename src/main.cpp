@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 
 		char arr1[256];
 		char arr2[256];
-
+		char tes[512];
 		int just_temp = 0;
 		int sz = 0;
 
@@ -40,6 +40,59 @@ int main(int argc, char* argv[])
 		vector<int> parenthesis;
 
 		cin.getline(arr2,256);
+
+		strcpy(tes,arr2);
+		for (int i = 0; tes[i] != '\0'; ++i)
+		{
+			tes[i] = tes[i+3];
+		}
+
+		if (arr2[0] == 'c' && arr2[1] == 'd')
+		{
+			char newDirectory[512];
+			char currDirectory[512];
+
+			if (getcwd(currDirectory,512) == NULL)
+			{
+				perror("Get current working directory failed.");
+			}
+
+			setenv("PWD", currDirectory, 1);
+
+			// cd
+			if (arr2[2] == '\0')
+			{
+				strcpy(newDirectory, getenv("HOME"));
+			}
+			// cd -
+			else if (arr2[3] == '-')
+			{
+				strcpy(newDirectory, getenv("OLDPWD"));
+			}
+			// cd bin
+			// cd Desktop
+			else
+			{
+				char* tp = tes;
+				strcpy(newDirectory, tp);
+			}
+
+			int error = 0;
+			chdir(newDirectory);
+			if (error > 0)
+			{
+				perror("NO BUENO");
+			}
+			else if (error == 0)
+			{
+				if (strcmp(currDirectory, newDirectory) != 0)
+				{
+					setenv("OLDPWD", currDirectory, 1);
+				}
+				setenv("PWD", newDirectory, 1);
+			}
+		}
+
 
 		// Iterates through the input to locate if '#' exists
 		for (unsigned i = 0; arr2[i] != '\0'; ++i)
