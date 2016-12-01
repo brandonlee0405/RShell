@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 
 		char arr1[256];
 		char arr2[256];
-		char tes[512];
+		char tes[512]; //secondary array
 		int just_temp = 0;
 		int sz = 0;
 
