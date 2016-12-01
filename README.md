@@ -26,8 +26,8 @@ Sometimes, the user information on the left-hand side of the terminal disappears
   
 A segmentation fault will sometimes occur if multiple "test" commands are entered in a single line. 
 
-If the user enters "cd <path>", the command will execute properly - however, an error message will still appear stating "No such file or directory", even if the directory/file exists. 
+If the user enters "cd PATH", the command will execute properly - however, an error message will still appear stating "No such file or directory", even if the directory/file exists. 
 
 If the user enters "cd -", the command will execute properly - however, an error message will still appear regarding OLDPWD not being set.
 
-When using connectors, "cd <path>" will sometimes not execute properly with other commands such as ls. 
+When using connectors, "cd PATH" will sometimes not execute properly with other commands such as ls. 
