@@ -77,13 +77,13 @@ int main(int argc, char* argv[])
 				strcpy(newDirectory, tp);
 			}
 
-			int error = 0;
+			errno = 0;
 			chdir(newDirectory);
-			if (error > 0)
+			if (errno > 0 || errno < 0)
 			{
-				perror("NO BUENO");
+				perror("Error");
 			}
-			else if (error == 0)
+			else if (errno == 0)
 			{
 				if (strcmp(currDirectory, newDirectory) != 0)
 				{
