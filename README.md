@@ -1,6 +1,6 @@
 # RShell
 #Authors 
-Neel Sethia and Bradon Lee.
+Neel Sethia and Brandon Lee.
 
 #Contents
 RShell is a replication of a terminal or command shell. 
