@@ -9,5 +9,6 @@ cd src
 ls
 cd
 ls
+pwd
 exit
 EOF
