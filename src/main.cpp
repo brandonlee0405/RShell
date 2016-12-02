@@ -30,34 +30,42 @@ int main(int argc, char* argv[])
 
 		char arr1[256];
 		char arr2[256];
+<<<<<<< HEAD
 		char tes[512]; //secondary array
+=======
+		char tes[512]; //creates new char array to store secondary elements
+>>>>>>> test
 		int just_temp = 0;
 		int sz = 0;
 
+		//Vector declarations to be used in connectors
     vector<vector<char *> > cmd_list;
     vector<char *> temp_cmds;
 		vector<string> vector_separator;
 		vector<int> parenthesis;
 
+		//gets Cstr data from arr2
 		cin.getline(arr2,256);
 
+		//copies cstr data from arr2 into the temp char array
 		strcpy(tes,arr2);
 		for (int i = 0; tes[i] != '\0'; ++i)
 		{
 			tes[i] = tes[i+3];
 		}
 
-		if (arr2[0] == 'c' && arr2[1] == 'd')
+
+		if (arr2[0] == 'c' && arr2[1] == 'd') //checks whether the input is "cd"
 		{
-			char newDirectory[512];
-			char currDirectory[512];
+			char newDirectory[512]; //array to store current pwd
+			char currDirectory[512]; //array for oldpwd
 
 			if (getcwd(currDirectory,512) == NULL)
 			{
-				perror("Get current working directory failed.");
+				perror("Get current working directory failed."); //returns if cwd fails
 			}
 
-			setenv("PWD", currDirectory, 1);
+			setenv("PWD", currDirectory, 1); //sets pwd to curr directory before
 
 			// cd
 			if (arr2[2] == '\0')
@@ -65,7 +73,7 @@ int main(int argc, char* argv[])
 				strcpy(newDirectory, getenv("HOME"));
 			}
 			// cd -
-			else if (arr2[3] == '-')
+			else if (arr2[3] == '-')  //handles '-' entries
 			{
 				strcpy(newDirectory, getenv("OLDPWD"));
 			}
@@ -79,7 +87,7 @@ int main(int argc, char* argv[])
 
 			errno = 0;
 			chdir(newDirectory);
-			if (errno > 0 || errno < 0)
+			if (errno > 0 || errno < 0) //change from error to errno
 			{
 				perror("Error");
 			}
