@@ -30,11 +30,10 @@ int main(int argc, char* argv[])
 
 		char arr1[256];
 		char arr2[256];
-<<<<<<< HEAD
-		char tes[512]; //secondary array
-=======
+
+
 		char tes[512]; //creates new char array to store secondary elements
->>>>>>> test
+
 		int just_temp = 0;
 		int sz = 0;
 
