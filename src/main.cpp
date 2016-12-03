@@ -10,7 +10,7 @@ Brandon Lee
 #include <string>
 #include <vector>
 #include <cstring>
-
+#include <errno.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
