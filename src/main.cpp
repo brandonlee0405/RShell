@@ -7,10 +7,12 @@ Brandon Lee
 
 #include <iostream>
 #include <stdio.h>
+#include <unistd.h>
+#include <errno.h>
 #include <string>
 #include <vector>
 #include <cstring>
-#include <errno.h>
+
 #include <unistd.h>
 #include <sys/wait.h>
 #include <sys/types.h>
@@ -28,78 +30,17 @@ int main(int argc, char* argv[])
 	{
 		prompt();
 
-		char arr1[256];
-		char arr2[256];
-
-
-		char tes[512]; //creates new char array to store secondary elements
-
+		char arr1[512];
+		char arr2[512];
 		int just_temp = 0;
 		int sz = 0;
-
-		//Vector declarations to be used in connectors
     vector<vector<char *> > cmd_list;
     vector<char *> temp_cmds;
+
+		cin.getline(arr2,512);
+
 		vector<string> vector_separator;
 		vector<int> parenthesis;
-
-		//gets Cstr data from arr2
-		cin.getline(arr2,256);
-
-		//copies cstr data from arr2 into the temp char array
-		strcpy(tes,arr2);
-		for (int i = 0; tes[i] != '\0'; ++i)
-		{
-			tes[i] = tes[i+3];
-		}
-
-
-		if (arr2[0] == 'c' && arr2[1] == 'd') //checks whether the input is "cd"
-		{
-			char newDirectory[512]; //array to store current pwd
-			char currDirectory[512]; //array for oldpwd
-
-			if (getcwd(currDirectory,512) == NULL)
-			{
-				perror("Get current working directory failed."); //returns if cwd fails
-			}
-
-			setenv("PWD", currDirectory, 1); //sets pwd to curr directory before
-
-			// cd
-			if (arr2[2] == '\0')
-			{
-				strcpy(newDirectory, getenv("HOME"));
-			}
-			// cd -
-			else if (arr2[3] == '-')  //handles '-' entries
-			{
-				strcpy(newDirectory, getenv("OLDPWD"));
-			}
-			// cd bin
-			// cd Desktop
-			else
-			{
-				char* tp = tes;
-				strcpy(newDirectory, tp);
-			}
-
-			errno = 0;
-			chdir(newDirectory);
-			if (errno > 0 || errno < 0) //change from error to errno
-			{
-				perror("Error");
-			}
-			else if (errno == 0)
-			{
-				if (strcmp(currDirectory, newDirectory) != 0)
-				{
-					setenv("OLDPWD", currDirectory, 1);
-				}
-				setenv("PWD", newDirectory, 1);
-			}
-		}
-
 
 		// Iterates through the input to locate if '#' exists
 		for (unsigned i = 0; arr2[i] != '\0'; ++i)

@@ -110,6 +110,45 @@ class Execute
 
                 }
               }
+
+              if (strcmp(temp_arr[0], "cd") == 0)
+              {
+                char newDirectory[512];
+                char currDirectory[512];
+
+                if (getcwd(currDirectory,512) == NULL)
+                {
+                  perror("Get current working directory failed.");
+                }
+                setenv("PWD", currDirectory, 1);
+                if (temp_arr[1] == '\0')
+                {
+                  strcpy(newDirectory, getenv("HOME"));
+                }
+                else if (strcmp(temp_arr[1], "-") == 0)
+                {
+                  strcpy(newDirectory, getenv("OLDPWD"));
+                }
+                else
+                {
+                  strcpy(newDirectory, temp_arr[1]);
+                }
+                errno = 0;
+                chdir(newDirectory);
+                if (errno > 0 || errno < 0)
+          			{
+          				perror("Error");
+          			}
+          			else if (errno == 0)
+          			{
+          				if (strcmp(currDirectory, newDirectory) != 0)
+          				{
+          					setenv("OLDPWD", currDirectory, 1);
+          				}
+          				setenv("PWD", newDirectory, 1);
+          			}
+              }
+
       				pid_t PID = fork();
       				pid_t PARENT;
 
@@ -226,6 +265,44 @@ class Execute
                 }
               }
             }
+            if (strcmp(temp_arr[0], "cd") == 0)
+            {
+              char newDirectory[512];
+              char currDirectory[512];
+
+              if (getcwd(currDirectory,512) == NULL)
+              {
+                perror("Get current working directory failed.");
+              }
+              setenv("PWD", currDirectory, 1);
+              if (temp_arr[1] == '\0')
+              {
+                strcpy(newDirectory, getenv("HOME"));
+              }
+              else if (strcmp(temp_arr[1], "-") == 0)
+              {
+                strcpy(newDirectory, getenv("OLDPWD"));
+              }
+              else
+              {
+                strcpy(newDirectory, temp_arr[1]);
+              }
+              errno = 0;
+              chdir(newDirectory);
+              if (errno > 0 || errno < 0)
+              {
+                perror("Error");
+              }
+              else if (errno == 0)
+              {
+                if (strcmp(currDirectory, newDirectory) != 0)
+                {
+                  setenv("OLDPWD", currDirectory, 1);
+                }
+                setenv("PWD", newDirectory, 1);
+              }
+            }
+
             pid_t PID = fork();
             pid_t PARENT;
 
@@ -346,6 +423,46 @@ class Execute
                   }
                 }
               }
+
+              if (strcmp(temp_arr[0], "cd") == 0)
+              {
+                char newDirectory[512];
+                char currDirectory[512];
+
+                if (getcwd(currDirectory,512) == NULL)
+                {
+                  perror("Get current working directory failed.");
+                }
+                setenv("PWD", currDirectory, 1);
+                if (temp_arr[1] == '\0')
+                {
+                  strcpy(newDirectory, getenv("HOME"));
+                }
+                else if (strcmp(temp_arr[1], "-") == 0)
+                {
+                  strcpy(newDirectory, getenv("OLDPWD"));
+                }
+                else
+                {
+                  strcpy(newDirectory, temp_arr[1]);
+                }
+                errno = 0;
+                chdir(newDirectory);
+                if (errno > 0 || errno < 0)
+          			{
+          				perror("Error");
+          			}
+          			else if (errno == 0)
+          			{
+          				if (strcmp(currDirectory, newDirectory) != 0)
+          				{
+          					setenv("OLDPWD", currDirectory, 1);
+          				}
+          				setenv("PWD", newDirectory, 1);
+          			}
+              }
+
+
               pid_t PID = fork();
       				pid_t PARENT;
 
@@ -448,6 +565,43 @@ class Execute
                     exit(0);
                   }
                 }
+              }
+            }
+            if (strcmp(temp_arr[0], "cd") == 0)
+            {
+              char newDirectory[512];
+              char currDirectory[512];
+
+              if (getcwd(currDirectory,512) == NULL)
+              {
+                perror("Get current working directory failed.");
+              }
+              setenv("PWD", currDirectory, 1);
+              if (temp_arr[1] == '\0')
+              {
+                strcpy(newDirectory, getenv("HOME"));
+              }
+              else if (strcmp(temp_arr[1], "-") == 0)
+              {
+                strcpy(newDirectory, getenv("OLDPWD"));
+              }
+              else
+              {
+                strcpy(newDirectory, temp_arr[1]);
+              }
+              errno = 0;
+              chdir(newDirectory);
+              if (errno > 0 || errno < 0)
+              {
+                perror("Error");
+              }
+              else if (errno == 0)
+              {
+                if (strcmp(currDirectory, newDirectory) != 0)
+                {
+                  setenv("OLDPWD", currDirectory, 1);
+                }
+                setenv("PWD", newDirectory, 1);
               }
             }
             pid_t PID = fork();
